@@ -16,4 +16,13 @@ class HomeController extends AbstractController
         //$response = new Response('<h1>hello</h1>',200, []);
         return $this->render('index.html.twig');
     }
+
+    /**
+     * @Route("/contact", name="app_contact")
+     * @return Response
+     */
+    public function contact():Response
+    {
+        return $this->render('contact.html.twig');
+    }
 }
