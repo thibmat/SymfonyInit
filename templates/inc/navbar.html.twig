@@ -13,12 +13,12 @@
         </div>
         <div class="navbar navbar-dark bg-dark box-shadow">
             <div class="container d-flex justify-content-between">
-                <a href="/index.php" class="navbar-brand d-flex align-items-center">
+                <a href="{{ path('app_home_index') }}" class="navbar-brand d-flex align-items-center">
                     <img src="/img/divers/logo.svg" width="30" height="30" style="color:white"/>
                     <strong>Mondocine</strong>
                 </a>
-                <a class="text-white" href="/index.php">Accueil <span class="sr-only">(current)</span></a>
-                <a class="text-white" href="/films">Les Films</a>
+                <a class="text-white" href="{{ path('app_home_index') }}">Accueil <span class="sr-only">(current)</span></a>
+                <a class="text-white" href="{{ path('app_produit_list') }}">Les Produits</a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

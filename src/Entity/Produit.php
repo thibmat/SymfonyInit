@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,6 +52,22 @@ class Produit
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $imageName;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\category", inversedBy="produits")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $categories;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="produits")
+     */
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +154,44 @@ class Produit
     public function setImageName(?string $imageName): self
     {
         $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function getCategories(): ?category
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?category $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
 
         return $this;
     }
