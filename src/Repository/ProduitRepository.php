@@ -42,6 +42,6 @@ class ProduitRepository extends ServiceEntityRepository
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
-        ;
+            ;
     }
 }
