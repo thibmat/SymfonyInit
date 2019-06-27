@@ -64,6 +64,11 @@ class Produit
      */
     private $tags;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -163,7 +168,7 @@ class Produit
         return $this->categories;
     }
 
-    public function setCategories(?category $categories): self
+    public function setCategories(category $categories): self
     {
         $this->categories = $categories;
 
@@ -192,6 +197,18 @@ class Produit
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

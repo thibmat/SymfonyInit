@@ -38,7 +38,7 @@ class ProduitRepository extends ServiceEntityRepository
     public function findOneBySomeField($value): ?Produit
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.name = :val')
+            ->andWhere('p.slug= :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

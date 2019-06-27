@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit index{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1 class="mt-2">Présentation des produits</h1>
+        <section class="row">
+            <div class="card-deck">
+                {% for produit in produits %}
+
+                        <div class="card">
+                            <a class="card-link btn btn-outline-info" href="{{ path('produit_show', {'slug': produit.slug}) }}">
+                            <img src="/img/{{ produit.imageName }}" class="card-img-top"
+                                 alt="Image de {{ produit.name }}">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text">{{ produit.categories.name }}</p>
+                                <h5 class="card-title text-center">{{ produit.name }} - {{ produit.price }} €</h5>
+                                <p class="card-text">{{ produit.description() | slice(0,75) }}</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a class="card-link btn btn-outline-info" href="{{ path('produit_show', {'slug': produit.slug}) }}">voir</a>
+                                <a class="card-link btn btn-outline-info" href="{{ path('produit_edit', {'slug': produit.slug}) }}">editer</a>
+                                <p>{{ produit.tags.values | join(', ') }}</p>
+                            </div>
+                        </div>
+
+                {% else %}
+                    <div class="col-4">
+                        <h2>Il n'y a pas de produits à afficher</h2>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <a href="{{ path('produit_new') }}">Créer un nouveau produit</a>
+    </main>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ produit.name }}
+        <small class="badge badge-info">
+            {{ produit.price }}€
+        </small>
+    </h1>
+    <h2>{{ produit.categories.name }}</h2>
+    <div class="row">
+        <div class="col">
+            <img src="/img/{{ produit.imageName }}" class="card-img-top"
+                 alt="Image de {{ produit.name }}">
+        </div>
+        <div class="col">
+            <a href="{{ path('produit_edit', {'slug': produit.slug}) }}">Editer</a>
+            <p>{{ produit.description | nl2br }}</p>
+        </div>
+    </div>
+
+    <p>
+        Publié le {{ produit.creationDate | date('d/m/Y') }}
+    </p>
+
+    <a href="{{ path('produit_index') }}">Retour à la liste des produits</a>
+
+
+    {{ include('produit/_delete_form.html.twig') }}
+{% endblock %}
+
+
+
+
