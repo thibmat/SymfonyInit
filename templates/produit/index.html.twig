@@ -14,6 +14,11 @@
                             <img src="/img/{{ produit.imageName }}" class="card-img-top"
                                  alt="Image de {{ produit.name }}">
                             </a>
+                            <div class="card-img-overlay">
+                                    {% for tag in produit.tags.values %}
+                                        <a class="card-link btn-sm btn-outline-secondary " style="position:relative; left:-20px;">{{ tag }}</a>
+                                    {% endfor %}
+                            </div>
                             <div class="card-body">
                                 <p class="card-text">{{ produit.categories.name }}</p>
                                 <h5 class="card-title text-center">{{ produit.name }} - {{ produit.price }} €</h5>

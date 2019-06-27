@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -72,6 +73,17 @@ class Produit
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+    }
+
+    /**
+     * Met a jour le slug par rapport au name
+     * @return Produit
+     */
+    public function updateSlug(): self
+    {
+        $slugify = new Slugify();
+        $this->slug = $slugify->slugify($this->name);
+        return $this;
     }
 
     public function getId(): ?int

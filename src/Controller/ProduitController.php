@@ -30,21 +30,23 @@ class ProduitController extends AbstractController
 
     /**
      * @Route("/new", name="produit_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
         $produit = new Produit();
         $form = $this->createForm(Produit1Type::class, $produit);
+        $form->remove('slug');
+        $form->remove('creationDate');
+        $form->remove('modifiedDate');
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
             $entityManager->flush();
-
             return $this->redirectToRoute('produit_index');
         }
-
         return $this->render('produit/new.html.twig', [
             'produit' => $produit,
             'form' => $form->createView(),
