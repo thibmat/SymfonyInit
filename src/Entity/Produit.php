@@ -70,6 +70,11 @@ class Produit
      */
     private $slug;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbViews;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -175,12 +180,12 @@ class Produit
         return $this;
     }
 
-    public function getCategories(): ?category
+    public function getCategories(): ?Category
     {
         return $this->categories;
     }
 
-    public function setCategories(category $categories): self
+    public function setCategories(Category $categories): self
     {
         $this->categories = $categories;
 
@@ -221,6 +226,18 @@ class Produit
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getNbViews(): ?int
+    {
+        return $this->nbViews;
+    }
+
+    public function setNbViews(?int $nbViews): self
+    {
+        $this->nbViews = $nbViews;
 
         return $this;
     }

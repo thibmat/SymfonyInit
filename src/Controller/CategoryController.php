@@ -24,7 +24,6 @@ class CategoryController extends AbstractController
             'categories' => $categoryRepository->findAll(),
         ]);
     }
-
     /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
      */
@@ -41,13 +40,11 @@ class CategoryController extends AbstractController
 
             return $this->redirectToRoute('category_index');
         }
-
         return $this->render('category/new.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
         ]);
     }
-
     /**
      * @Route("/{id}", name="category_show", methods={"GET"})
      */

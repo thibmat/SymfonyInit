@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New Produit{% endblock %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block body %}
-    <h1>Create new Produit</h1>
+    <h1>Creation d'un nouveau produit</h1>
 
     {{ include('produit/_form.html.twig') }}
-
-    <a href="{{ path('produit_index') }}">Retour à la liste</a>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <a href="{{ path('produit_index') }}"><button type="submit" class="btn-primary btn">Retour à la liste</button></a>
+        </div>
+        <div class="col-sm-10">
+            <button type="submit" class="btn-success btn">Créer l’article</button>
+        </div>
+    </div>
 {% endblock %}

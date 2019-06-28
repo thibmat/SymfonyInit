@@ -1,36 +1,32 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Produit index{% endblock %}
-
 {% block body %}
     <main class="container">
         <h1 class="mt-2">Présentation des produits</h1>
+        <div class="col-sm-6">
+            <a href="{{ path('produit_new') }}"><button class="btn-success btn">Créer un nouveau produit</button></a>
+        </div>
         <section class="row">
-            <div class="card-deck">
+            <div class="card-deck justify-content-center">
                 {% for produit in produits %}
-
-                        <div class="card">
+                        <div class="card col-3 mt-5" style="min-width: 20%; max-width:25%;padding:0" >
                             <a class="card-link btn btn-outline-info" href="{{ path('produit_show', {'slug': produit.slug}) }}">
                             <img src="/img/{{ produit.imageName }}" class="card-img-top"
                                  alt="Image de {{ produit.name }}">
                             </a>
-                            <div class="card-img-overlay">
-                                    {% for tag in produit.tags.values %}
-                                        <a class="card-link btn-sm btn-outline-secondary " style="position:relative; left:-20px;">{{ tag }}</a>
-                                    {% endfor %}
-                            </div>
                             <div class="card-body">
                                 <p class="card-text">{{ produit.categories.name }}</p>
                                 <h5 class="card-title text-center">{{ produit.name }} - {{ produit.price }} €</h5>
                                 <p class="card-text">{{ produit.description() | slice(0,75) }}</p>
                             </div>
-                            <div class="card-footer text-center">
-                                <a class="card-link btn btn-outline-info" href="{{ path('produit_show', {'slug': produit.slug}) }}">voir</a>
-                                <a class="card-link btn btn-outline-info" href="{{ path('produit_edit', {'slug': produit.slug}) }}">editer</a>
-                                <p>{{ produit.tags.values | join(', ') }}</p>
+                            <div class="card-footer text-center p-0">
+                                <div class="w-100 mb-2" >{{ produit.tags.values | join(', ') }}</div>
+                                <div class="w-100 mb-2" >
+                                    <a class="card-link btn btn-outline-info" href="{{ path('produit_show', {'slug': produit.slug}) }}">voir</a>
+                                    <a class="card-link btn btn-outline-info" href="{{ path('produit_edit', {'slug': produit.slug}) }}">editer</a>
+                                </div>
                             </div>
                         </div>
-
                 {% else %}
                     <div class="col-4">
                         <h2>Il n'y a pas de produits à afficher</h2>
@@ -38,6 +34,5 @@
                 {% endfor %}
             </div>
         </section>
-        <a href="{{ path('produit_new') }}">Créer un nouveau produit</a>
     </main>
 {% endblock %}
