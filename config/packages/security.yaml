@@ -3,8 +3,8 @@ security:
         App\Entity\User:
             algorithm: argon2i
     role_hierarchy:
-        ROLE_MODERATEUR:  []
-        ROLE_ADMIN:       []
+        ROLE_MODERATEUR:  ROLE_USER
+        ROLE_ADMIN:       ROLE_MODERATEUR
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers

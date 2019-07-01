@@ -15,22 +15,30 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
-                        {% for role in user.roles %}
-                            {{ role }}
-                        {% endfor %}
-                    </td>
-                    <td></td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">Il n'y a pas d'utilisateur à afficher</td>
-                </tr>
-            {% endfor %}
+            {% if is_granted('ROLE_MODERATEUR') %}
+
+
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% for role in user.roles %}
+                                {{ role }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{{ path('adminUser', {'roles':'MODERATEUR', 'id': user.id}) }}" class="btn btn-success">MODERATEUR</a>
+                            <a href="{{ path('adminUser', {'roles':'ADMIN', 'id': user.id}) }}" class="btn btn-warning">ADMIN</a>
+                            <a href="{{ path('adminUser', {'roles':'SUPER_ADMIN', 'id': user.id}) }}" class="btn btn-danger">SUPER Administrateur</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Il n'y a pas d'utilisateur à afficher</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     </main>

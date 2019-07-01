@@ -21,14 +21,21 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{id}")
-     * @param $user
+     * @Route("/admin/{roles}/{id}", name="adminUser")
+     * @param UserRepository $userRepository
+     * @param User $user
+     * @param string $roles
      * @return Response
      */
-    public function switchAdmin(User $user):Response
+    public function switchAdmin(UserRepository $userRepository, User $user, string $roles=''):Response
     {
-
-       $user->setRoles(['SUPER_ADMIN']);
-       return $this->redirectToRoute('admin');
+        $user->setRoles(['ROLE_'.$roles]);
+        $manager= $this->getDoctrine()->getManager();
+        $manager->persist($user);
+        $manager->flush();
+        $this->addFlash('success', 'L\'utilisateur a bien été mis à jour');
+        return $this->redirectToRoute('admin');
     }
+
+
 }
