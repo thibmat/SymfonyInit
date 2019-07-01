@@ -30,7 +30,7 @@ class Produit
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal", precision=9, scale=2)
      */
     private $price;
 
@@ -55,7 +55,7 @@ class Produit
     private $imageName;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\category", inversedBy="produits")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="produits")
      * @ORM\JoinColumn(nullable=false)
      */
     private $categories;

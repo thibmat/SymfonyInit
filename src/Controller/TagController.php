@@ -33,15 +33,13 @@ class TagController extends AbstractController
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($tag);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Le tag a bien été créé');
             return $this->redirectToRoute('tag_index');
         }
-
         return $this->render('tag/new.html.twig', [
             'tag' => $tag,
             'form' => $form->createView(),
@@ -68,7 +66,7 @@ class TagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Le tag a bien été mis à jour');
             return $this->redirectToRoute('tag_index', [
                 'id' => $tag->getId(),
             ]);

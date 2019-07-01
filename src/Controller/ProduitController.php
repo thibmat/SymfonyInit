@@ -71,7 +71,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{slug<[a-z0-9\_]+>}", name="produit_show", methods={"GET"})
+     * @Route("/{slug<[a-z0-9\-]+>}", name="produit_show", methods={"GET"})
      * @param Produit $produit
      * @return Response
      */
@@ -93,7 +93,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{slug<[a-z0-9\_]+>}/edit", name="produit_edit", methods={"GET","POST"})
+     * @Route("/{slug<[a-z0-9\-]+>}/edit", name="produit_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Produit $produit): Response
     {
@@ -115,7 +115,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{slug<[a-z0-9\_]+>}", name="produit_delete", methods={"DELETE"})
+     * @Route("/{slug<[a-z0-9\-]+>}", name="produit_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Produit $produit): Response
     {
@@ -129,7 +129,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/search/{searchTerm<[a-zA-Z0-9\_]+>}")
+     * @Route("/search/{searchTerm<[a-zA-Z0-9\-]+>}")
      * @param string $searchTerm
      * @return Response
      */

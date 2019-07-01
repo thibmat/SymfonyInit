@@ -65,7 +65,7 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'La catégorie a bien été mise à jour');
             return $this->redirectToRoute('category_index', [
                 'id' => $category->getId(),
             ]);
