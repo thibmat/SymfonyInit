@@ -17,6 +17,8 @@ class TagController extends AbstractController
 {
     /**
      * @Route("/", name="tag_index", methods={"GET"})
+     * @param TagRepository $tagRepository
+     * @return Response
      */
     public function index(TagRepository $tagRepository): Response
     {
@@ -27,6 +29,8 @@ class TagController extends AbstractController
 
     /**
      * @Route("/new", name="tag_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -48,6 +52,8 @@ class TagController extends AbstractController
 
     /**
      * @Route("/{id}", name="tag_show", methods={"GET"})
+     * @param Tag $tag
+     * @return Response
      */
     public function show(Tag $tag): Response
     {
@@ -58,6 +64,9 @@ class TagController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="tag_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Tag $tag
+     * @return Response
      */
     public function edit(Request $request, Tag $tag): Response
     {
@@ -80,6 +89,9 @@ class TagController extends AbstractController
 
     /**
      * @Route("/{id}", name="tag_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Tag $tag
+     * @return Response
      */
     public function delete(Request $request, Tag $tag): Response
     {
@@ -88,7 +100,6 @@ class TagController extends AbstractController
             $entityManager->remove($tag);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('tag_index');
     }
 }

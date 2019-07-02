@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer un utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Editer un utilisateur</h1>
+
+    {{ include('admin/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <div class="col-sm-10">
+        <a href="{{ path('admin') }}"><button class="btn-primary btn">Retour à la liste</button></a>
+        <button type="submit" class="btn-success btn">modifier l'utilisateur</button>
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}
+

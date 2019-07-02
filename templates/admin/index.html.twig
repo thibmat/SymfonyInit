@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Hello AdminController!{% endblock %}
-
 {% block body %}
     <main class="container">
         <h1 class="mt-2">Zone d'amninistration</h1>
@@ -11,26 +9,20 @@
                 <th>Id</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Inscrit depuis le</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
             {% if is_granted('ROLE_MODERATEUR') %}
-
-
                 {% for user in users %}
                     <tr>
                         <td>{{ user.id }}</td>
                         <td>{{ user.email }}</td>
+                        <td>{{ user.roles | join(', ') }}</td>
+                        <td>{{ user.createdAt | date("d/m/Y") }}</td>
                         <td>
-                            {% for role in user.roles %}
-                                {{ role }}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            <a href="{{ path('adminUser', {'roles':'MODERATEUR', 'id': user.id}) }}" class="btn btn-success">MODERATEUR</a>
-                            <a href="{{ path('adminUser', {'roles':'ADMIN', 'id': user.id}) }}" class="btn btn-warning">ADMIN</a>
-                            <a href="{{ path('adminUser', {'roles':'SUPER_ADMIN', 'id': user.id}) }}" class="btn btn-danger">SUPER Administrateur</a>
+                            <a href="{{ path('SwitchRole', { 'id': user.id}) }}" class="btn btn-success">Changer de role</a>
                         </td>
                     </tr>
                 {% else %}

@@ -3,17 +3,27 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin")
+ * Class AdminController
+ * @package App\Controller
+ */
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/", name="admin")
+     * @param UserRepository $userRepository
+     * @return Response
      */
-    public function index(UserRepository $userRepository)
+    public function index(UserRepository $userRepository):Response
     {
         return $this->render('admin/index.html.twig', [
             'users' => $userRepository->findAll()
@@ -21,21 +31,23 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{roles}/{id}", name="adminUser")
-     * @param UserRepository $userRepository
+     * @Route("/roles/{id}", name="SwitchRole")
+     * @param Request $request
      * @param User $user
-     * @param string $roles
      * @return Response
      */
-    public function switchAdmin(UserRepository $userRepository, User $user, string $roles=''):Response
+    public function switchRole(ObjectManager $manager, Request $request, User $user):Response
     {
-        $user->setRoles(['ROLE_'.$roles]);
-        $manager= $this->getDoctrine()->getManager();
-        $manager->persist($user);
-        $manager->flush();
-        $this->addFlash('success', 'L\'utilisateur a bien été mis à jour');
-        return $this->redirectToRoute('admin');
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->flush();
+            $this->addFlash('success', 'L\'utilisateur a bien été mis à jour');
+            return $this->redirectToRoute('admin');
+        }
+        return $this->render('admin/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
-
-
 }
