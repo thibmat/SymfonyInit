@@ -7,7 +7,18 @@
                         <h4 class="text-white">A Propos</h4>
                         <p class="text-muted">A chacun son cinéma. Cinéphile ou simple amateur à la recherche d'un avis, Mondociné vous parle de tout. Retrouvez nos critiques, l'actualité ciné & vidéo..</p>
                     </div>
-
+                    <div class="col-sm-4 offset-md-1 mr-12 py-4">
+                        <h4 class="text-white text-right">Section membre</h4>
+                        <ul class="list-unstyled">
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <li class='text-right text-white'>{{ app.user.email }} ( {{ app.user.roles[0] }} )</li>
+                                <li class='text-right'><a class="text-white" href="{{ path('app_logout') }}">Deconnexion</a></li>
+                            {% else %}
+                                <li class='text-right'><a class="text-white" href="{{ path('app_register') }}">Inscription</a></li>
+                                <li class='text-right'><a class="text-white" href="{{ path('app_login') }}">Connexion</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,7 +32,9 @@
                 <a class="text-white" href="{{ path('produit_index') }}">Les Produits</a>
                 <a class="text-white" href="{{ path('category_index') }}">Les Categories</a>
                 <a class="text-white" href="{{ path('tag_index') }}">Les Tags</a>
-
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="text-white" href="{{ path('admin') }}">Administration</a>
+                {% endif %}
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

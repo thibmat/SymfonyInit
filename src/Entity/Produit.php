@@ -40,7 +40,7 @@ class Produit
 
     /**
      * @ORM\Column(type="decimal", precision=9, scale=2)
-     * @Assert\(type="float")
+     * @Assert\Type(type="numeric")
      * @Assert\Range(
      *     min=0,
      *     max=999999.99
@@ -89,9 +89,20 @@ class Produit
      */
     private $nbViews;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Author;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     /**
@@ -252,6 +263,18 @@ class Produit
     public function setNbViews(?int $nbViews): self
     {
         $this->nbViews = $nbViews;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->Author;
+    }
+
+    public function setAuthor(?User $Author): self
+    {
+        $this->Author = $Author;
 
         return $this;
     }

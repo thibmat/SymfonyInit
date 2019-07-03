@@ -2,10 +2,6 @@ security:
     encoders:
         App\Entity\User:
             algorithm: argon2i
-    role_hierarchy:
-        ROLE_MODERATEUR:  ROLE_USER
-        ROLE_ADMIN:       ROLE_MODERATEUR
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -27,14 +23,26 @@ security:
             logout:
                 path:   app_logout
 
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 86400 # 1 jour in seconds
+                path:     /
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    role_hierarchy:
+        ROLE_MODERATEUR:  ROLE_USER
+        ROLE_ADMIN:       ROLE_MODERATEUR
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/produit/gestion, roles: IS_AUTHENTICATED_FULLY}
+        #- { path: ^/produit/delete, roles: ROLE_MODERATEUR, methods: DELETE}
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }

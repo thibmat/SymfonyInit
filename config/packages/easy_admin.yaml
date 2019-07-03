@@ -1,0 +1,9 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\Produit
+        - App\Entity\Category
+        - App\Entity\User
+        - App\Entity\Tag
+    site_name: 'Administration mondocine'
+

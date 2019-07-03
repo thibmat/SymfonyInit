@@ -6,6 +6,8 @@ use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -32,7 +34,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="produit_new", methods={"GET","POST"})
+     * @Route("/gestion/new", name="produit_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      * @throws \Exception
@@ -43,6 +45,7 @@ class ProduitController extends AbstractController
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
             $date = new DateTime();
             $produit->updateSlug();
             $directory = 'img/';
@@ -58,6 +61,7 @@ class ProduitController extends AbstractController
             }
             $produit->setCreationDate($date);
             $produit->setNbViews(0);
+            $produit->setAuthor($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
             $entityManager->flush();
@@ -93,21 +97,28 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{slug<[a-z0-9\-]+>}/edit", name="produit_edit", methods={"GET","POST"})
+     * @Route("/gestion/edit/{slug<[a-z0-9\-]+>}", name="produit_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Produit $produit
+     * @return Response
+     * @throws \Exception
      */
     public function edit(Request $request, Produit $produit): Response
     {
+        $user = $this->getUser();
+        if ($user !== $produit->getAuthor() && $this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('warning', 'Vous ne pouvez pas modifier un produit que vous n\'avez pas créé');
+            throw $this->createAccessDeniedException("l'utilisateur courant n'est pas l'auteur de la publication");
+        }
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $now = new DateTime();
+            $produit->setModifiedDate($now);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('warning', 'Le produit a bien été modifié');
-            return $this->redirectToRoute('produit_index', [
-                'slug' => $produit->getSlug(),
-            ]);
+            return $this->redirectToRoute('produit_index');
         }
-
         return $this->render('produit/edit.html.twig', [
             'produit' => $produit,
             'form' => $form->createView(),
@@ -115,7 +126,8 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{slug<[a-z0-9\-]+>}", name="produit_delete", methods={"DELETE"})
+     * @Route("/delete/{slug<[a-z0-9\-]+>}", name="produit_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_MODERATEUR")
      */
     public function delete(Request $request, Produit $produit): Response
     {

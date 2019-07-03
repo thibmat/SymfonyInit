@@ -32,6 +32,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/roles/{id}", name="SwitchRole")
+     * @param ObjectManager $manager
      * @param Request $request
      * @param User $user
      * @return Response

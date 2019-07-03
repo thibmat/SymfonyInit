@@ -27,7 +27,15 @@
     {% endfor %}
     {% block body %}{% endblock %}
 </main>
-{% block footer %}{% endblock %}
+{% block footer %}
+<footer>
+    <div class="w-100 h-auto bg-dark text-center text-white fixed-bottom"">
+        Footer
+    <br>
+    <br><br>
+    </div>
+</footer>
+{% endblock %}
 
 {% block javascripts %}
     <script src="/js/jquery-3.4.1.min.js"></script>
