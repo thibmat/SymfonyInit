@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

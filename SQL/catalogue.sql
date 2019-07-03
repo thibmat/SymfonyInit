@@ -52,16 +52,6 @@ INSERT INTO `produit` (`id`, `name`, `description`, `price`, `creation_date`, `m
 (6, 'test', 'test description test descriptiontest descriptiontest descriptiontest descriptiontest descriptiontest descriptiontest descriptiontest description', '10.50', '2019-07-03 11:41:03', NULL, 1, 'test1562154063.jpeg', 1, 'test', 0, 2);
 
 --
--- Déchargement des données de la table `produit_tag`
---
-
-INSERT INTO `produit_tag` (`produit_id`, `tag_id`) VALUES
-(1, 1),
-(3, 1),
-(4, 1),
-(5, 1);
-
---
 -- Déchargement des données de la table `tag`
 --
 
@@ -73,3 +63,14 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Déchargement des données de la table `produit_tag`
+--
+
+INSERT INTO `produit_tag` (`produit_id`, `tag_id`) VALUES
+(1, 1),
+(3, 1),
+(4, 1),
+(5, 1);

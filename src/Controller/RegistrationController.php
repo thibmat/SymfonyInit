@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthAuthenticator;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_Transport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +24,8 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
-        AppAuthAuthenticator $authenticator
+        AppAuthAuthenticator $authenticator,
+        Swift_Mailer $mailer
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -39,9 +43,19 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
             // do anything else you need here, like send an email
-
+            $message = (new Swift_Message('Bienvenue sur www.mondocine.com'))
+                ->setContentType("text/html")
+                ->setFrom('thibmat@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'hello.html.twig',
+                        ['name' => $user->getEmail()]
+                    )
+                )
+            ;
+            $mailer->send($message);
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
@@ -54,4 +68,5 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
 }

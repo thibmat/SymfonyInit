@@ -3,9 +3,11 @@
 {% block title %}Liste des Tags{% endblock %}
 
 {% block body %}
-    <h1>Liste des Tags</h1>
-    <div class="col-sm-6">
-        <a href="{{ path('tag_new') }}"><button class="btn-success btn">Créer un nouveau Tag</button></a>
+    <div class="col-12 row justify-content-between mt-1">
+        <h1>Index des Tags</h1>
+        {% if is_granted('ROLE_MODERATEUR') %}
+            <a href="{{ path('tag_new') }}" class="my-auto"><button class="btn-success btn">Créer un nouveau Tag</button></a>
+        {% endif %}
     </div>
     <table class="table m-3">
         <thead>

@@ -3,9 +3,11 @@
 {% block title %}Category index{% endblock %}
 
 {% block body %}
-    <h1>Index des catégories</h1>
-    <div class="col-sm-6">
-        <a href="{{ path('category_new') }}"><button class="btn-success btn">Créer une nouvelle catégorie</button></a>
+    <div class="col-12 row justify-content-between mt-1">
+        <h1>Index des catégories</h1>
+        {% if is_granted('ROLE_MODERATEUR') %}
+            <a href="{{ path('category_new') }}" class="my-auto"><button class="btn-success btn">Créer une nouvelle nouvelle categorie</button></a>
+        {% endif %}
     </div>
     <table class="table m-3">
         <thead>
