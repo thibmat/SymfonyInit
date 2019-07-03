@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Index des Tags{% endblock %}
+{% block title %}Liste des Tags{% endblock %}
 
 {% block body %}
-    <h1>Index des Tags</h1>
+    <h1>Liste des Tags</h1>
     <div class="col-sm-6">
         <a href="{{ path('tag_new') }}"><button class="btn-success btn">Créer un nouveau Tag</button></a>
     </div>
@@ -28,7 +28,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3"Il n'y a pas de Tag à afficher</td>
+                <td colspan="3">Il n'y a pas de Tag à afficher</td>
             </tr>
         {% endfor %}
         </tbody>
