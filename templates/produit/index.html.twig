@@ -33,7 +33,7 @@
                                         <a class="card-link btn btn-outline-secondary" href="{{ path('produit_edit', {'slug': produit.slug}) }}">Editer</a>
                                         {% endif %}
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <a class="card-link btn btn-outline-danger" href="{{ path('produit_delete', {'slug': produit.slug}) }}">Supprimer</a>
+                                            {{ include('produit/_delete_form.html.twig') }}
                                         {% endif %}
                                     </div>
                                 </div>

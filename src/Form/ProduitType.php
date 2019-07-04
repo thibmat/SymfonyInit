@@ -3,13 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Produit;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
+
 
 class ProduitType extends AbstractType
 {
@@ -26,27 +25,23 @@ class ProduitType extends AbstractType
             ->add('isPublished', null, [
                 'label' => 'Le produit doit il être publié ?'
             ])
-            ->add('imageName', FileType::class, [
-                'label' => 'Image (jpg / png / jpeg)',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2048k',
-                        'mimeTypes' => [
-                            'image/jpg',
-                            'image/png',
-                            'image/jpeg',
-                        ],
-                        'mimeTypesMessage' => 'Le type de fichier n\'est pas valide',
-                    ])
-                ],
-            ])
+            ->add(
+                'imageFile',
+                FileType::class,
+                [
+                    'label' => 'Image (jpg / png / jpeg)',
+                    'attr'=>['class'=>'file-path validate']
+                ]
+            )
             ->add('categories')
-            ->add('tags')
+            ->add('tags', collectionType::class, [
+                'entry_type'=> TagType::class,
+                'entry_options' => ['label' => false],
+                'allow_add'=>true,
+                'allow_delete'=>true
+            ])
             ;
     }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

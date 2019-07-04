@@ -46,7 +46,6 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
-            $date = new DateTime();
             $produit->updateSlug();
             $directory = 'img/';
             $file = $form['imageName']->getData();
@@ -59,8 +58,6 @@ class ProduitController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
             }
-            $produit->setCreationDate($date);
-            $produit->setNbViews(0);
             $produit->setAuthor($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
@@ -76,7 +73,7 @@ class ProduitController extends AbstractController
 
     /**
      * @Route("/{slug<[a-z0-9\-]+>}", name="produit_show", methods={"GET"})
-     * @param Produit $produit
+     * @param string $slug
      * @return Response
      */
     public function show(string $slug): Response
@@ -106,15 +103,13 @@ class ProduitController extends AbstractController
     public function edit(Request $request, Produit $produit): Response
     {
         $user = $this->getUser();
-        if ($user !== $produit->getAuthor() && $this->isGranted('ROLE_ADMIN')) {
+        if ($user !== $produit->getAuthor() && !$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('warning', 'Vous ne pouvez pas modifier un produit que vous n\'avez pas créé');
             throw $this->createAccessDeniedException("l'utilisateur courant n'est pas l'auteur de la publication");
         }
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $now = new DateTime();
-            $produit->setModifiedDate($now);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('warning', 'Le produit a bien été modifié');
             return $this->redirectToRoute('produit_index');

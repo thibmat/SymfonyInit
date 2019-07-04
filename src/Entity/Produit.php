@@ -3,13 +3,18 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class Produit
 {
@@ -65,8 +70,15 @@ class Produit
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $imageName;
+
+    /**
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName", size="imageSize")
+     * @var File
+     */
+    private $imageFile;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="produits")
@@ -95,6 +107,7 @@ class Produit
      */
     private $Author;
 
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -104,7 +117,21 @@ class Produit
     {
         return $this->getName();
     }
-
+    /**
+     * @ORM\PrePersist
+     */
+    public function setDefaultValues()
+    {
+        $this->creationDate = new DateTime();
+        $this->setNbViews(0);
+    }
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setModifiedAtValues()
+    {
+        $this->setModifiedDate(new DateTime());
+    }
     /**
      * Met a jour le slug par rapport au name
      * @return Produit
@@ -174,7 +201,7 @@ class Produit
         return $this->modifiedDate;
     }
 
-    public function setModifiedDate(?\DateTimeInterface $modifiedDate): self
+    public function setModifiedDate(\DateTimeInterface $modifiedDate): self
     {
         $this->modifiedDate = $modifiedDate;
 
@@ -203,6 +230,24 @@ class Produit
         $this->imageName = $imageName;
 
         return $this;
+    }
+    /**
+     * @return File
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+    /**
+     * @param File $imageFile
+     * @throws \Exception
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        if (!is_null($imageFile)) {
+            $this->modifiedDate = new \DateTimeImmutable();
+        }
+        $this->imageFile = $imageFile;
     }
 
     public function getCategories(): ?Category

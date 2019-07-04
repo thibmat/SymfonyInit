@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthAuthenticator;
+use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_Transport;
@@ -46,15 +47,19 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
             $message = (new Swift_Message('Bienvenue sur www.mondocine.com'))
                 ->setContentType("text/html")
-                ->setFrom('thibmat@gmail.com')
+                ->setFrom('tibdoranco@gmail.com')
                 ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'hello.html.twig',
-                        ['name' => $user->getEmail()]
-                    )
-                )
             ;
+            $img = $message->embed(Swift_Image::fromPath('img/divers/logoBlack.svg'));
+            $message->setBody(
+                $this->renderView(
+                    'hello.html.twig',
+                    [
+                        'name' => $user->getEmail(),
+                        'img' => $img
+                    ]
+                )
+            );
             $mailer->send($message);
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
