@@ -127,6 +127,7 @@ class Produit
     {
         $this->creationDate = new DateTime();
         $this->setNbViews(0);
+        $this->updateSlug();
     }
     /**
      * @ORM\PreUpdate

@@ -6,15 +6,18 @@ use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use DateTime;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/produit")
@@ -23,13 +26,27 @@ class ProduitController extends AbstractController
 {
     /**
      * @Route("/", name="produit_index", methods={"GET"})
+     * @param Request $request
+     * @param ProduitRepository $produitRepository
+     * @param PaginatorInterface $paginator
+     * @param ObjectManager $manager
+     * @return Response
      */
-    public function index(ProduitRepository $produitRepository): Response
-    {
+    public function index(
+        Request $request,
+        ProduitRepository $produitRepository,
+        PaginatorInterface $paginator
+    ): Response {
+        $allProductsQuery = $produitRepository->createQueryBuilder('p')
+            ->where('p.isPublished = 1')
+            ->getQuery();
+        $produits = $paginator->paginate(
+            $allProductsQuery, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            8 /*limit per page*/
+        );
         return $this->render('produit/index.html.twig', [
-            'produits' => $produitRepository->findBy([
-                'isPublished' => true
-            ])
+            'produits'=>$produits
         ]);
     }
 
@@ -46,7 +63,6 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
-            $produit->updateSlug();
             $produit->setAuthor($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
@@ -75,7 +91,7 @@ class ProduitController extends AbstractController
         if (!$produit) {
             throw $this->createNotFoundException('Produit non trouvé');
         }
-        $produit->setNbViews($produit->getNbViews() + 1);
+        //$produit->setNbViews($produit->getNbViews() + 1);
         $this->getDoctrine()->getManager()->flush();
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
@@ -137,4 +153,16 @@ class ProduitController extends AbstractController
             'produit' => $produit
         ]);
     }
+    public function updateNbViews(Produit $produit):JsonResponse
+    {
+        $views = $produit->getNbViews() + 1;
+        $produit->setNbViews($views);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->json([
+            'views' => $views
+        ]);
+    }
+
+
+
 }

@@ -29,7 +29,15 @@
                     <strong>Mondocine</strong>
                 </a>
                 <a class="text-white" href="{{ path('app_home_index') }}">Accueil <span class="sr-only">(current)</span></a>
-                <a class="text-white" href="{{ path('produit_index') }}">Les Produits</a>
+                <li class="nav-item dropdown text-decoration-none list-unstyled">
+                    <a class="nav-link dropdown-toggle text-white" href="{{ path('produit_index') }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Les Produits
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('produit_index') }}">Les Produits</a>
+                        <a class="dropdown-item" href="{{ path('produit_new') }}">Création</a>
+                    </div>
+                </li>
                 <a class="text-white" href="{{ path('category_index') }}">Les Categories</a>
                 <a class="text-white" href="{{ path('tag_index') }}">Les Tags</a>
                 {% if is_granted('ROLE_ADMIN') %}
