@@ -70,13 +70,16 @@ class Produit
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @var string
+     * @Assert\Length(
+     *     min=4,
+     *     max=255
+     * )
      */
     private $imageName;
 
     /**
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName", size="imageSize")
      * @var File
+     * @Vich\UploadableField(mapping="produit_image", fileNameProperty="imageName")
      */
     private $imageFile;
 
@@ -225,7 +228,7 @@ class Produit
         return $this->imageName;
     }
 
-    public function setImageName(?string $imageName): self
+    public function setImageName(?string $imageName = null): self
     {
         $this->imageName = $imageName;
 
@@ -234,7 +237,7 @@ class Produit
     /**
      * @return File
      */
-    public function getImageFile(): ?File
+    public function getImageFile():?File
     {
         return $this->imageFile;
     }

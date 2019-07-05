@@ -8,7 +8,6 @@ use App\Security\AppAuthAuthenticator;
 use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
-use Swift_Transport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +19,12 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param AppAuthAuthenticator $authenticator
+     * @param Swift_Mailer $mailer
+     * @return Response
      */
     public function register(
         Request $request,

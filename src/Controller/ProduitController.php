@@ -47,23 +47,12 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             $produit->updateSlug();
-            $directory = 'img/';
-            $file = $form['imageName']->getData();
-            if ($file) {
-                $newFileName = $produit->getSlug() . date_format($date, 'U') . '.' . $file->guessExtension();
-                try {
-                    $file->move($directory, $newFileName);
-                    $produit->setImageName($newFileName);
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-            }
             $produit->setAuthor($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
             $entityManager->flush();
             $this->addFlash('success', 'Le produit a bien été ajouté');
-            return $this->redirectToRoute('produit_index');
+            //return $this->redirectToRoute('produit_index');
         }
         return $this->render('produit/new.html.twig', [
             'produit' => $produit,

@@ -30,7 +30,6 @@ class ProduitType extends AbstractType
                 FileType::class,
                 [
                     'label' => 'Image (jpg / png / jpeg)',
-                    'attr'=>['class'=>'file-path validate']
                 ]
             )
             ->add('categories')

@@ -12,11 +12,12 @@
             <div class="card-deck justify-content-center">
                 {% for produit in produits %}
                         <div class="card col-3 mt-5" style="min-width: 20%; max-width:25%;padding:0" >
-                                <figure style="height:45%;" class="">
-                                    <a class="card-link btn btn-outline-info " href="{{ path('produit_show', {'slug': produit.slug}) }}">
-                                        <img src="/img/{{ produit.imageName }}" class="card-img-top "
-                                             alt="Image de {{ produit.name }}">
-                                    </a>
+                                <figure style="height:45%;display: flex;
+  justify-content: space-between;" class="mx-auto">
+                                        <a class="my-auto" href="{{ path('produit_show', {'slug': produit.slug}) }}">
+                                            <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" class="card-img-top"
+                                                 alt="Image de {{ produit.name }}">
+                                        </a>
                                 </figure>
                             <div class="card-body">
                                 <p class="card-text">{{ produit.categories.name }}</p>
